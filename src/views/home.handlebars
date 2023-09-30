@@ -1,0 +1,16 @@
+
+    <h1>Productos</h1>
+    <hr>
+    <section class="productsCards">
+        <article class="card">
+        {{#each products}}
+        <h3>{{this.title}}</h3>
+        <p>{{this.description}}</p>
+        <p>{{this.code}}</p>
+        <p>precio:{{this.price}}</p>
+        <p>stock:{{this.stock}}</p>
+        <p>categoria:{{this.category}}</p>
+        {{/each}}
+    </article>
+    </section>
+    

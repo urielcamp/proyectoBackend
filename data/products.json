@@ -1,0 +1,106 @@
+[
+	{
+		"id": 7,
+		"title": "Xbox 360",
+		"description": "consola videojuegos",
+		"price": 100,
+		"thumbnails": [
+			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
+		],
+		"status": true,
+		"code": "EP009",
+		"stock": 16,
+		"category": "consola"
+	},
+	{
+		"id": 9,
+		"title": "play 4",
+		"description": "consola de videojuegos",
+		"price": 100,
+		"thumbnails": [
+			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
+		],
+		"status": true,
+		"code": "EP011",
+		"stock": 16,
+		"category": "consola"
+	},
+	{
+		"id": 10,
+		"title": "play 5",
+		"description": "consola de videojuegos",
+		"price": 100,
+		"thumbnails": [
+			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
+		],
+		"status": true,
+		"code": "EP012",
+		"stock": 16,
+		"category": "consola"
+	},
+	{
+		"id": 11,
+		"title": "Xbox one",
+		"description": "consola de videojuegos",
+		"price": 100,
+		"thumbnails": [
+			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
+		],
+		"status": true,
+		"code": "EP013",
+		"stock": 16,
+		"category": "consola"
+	},
+	{
+		"id": 12,
+		"title": "play 2",
+		"description": "consola de videojuegos",
+		"price": 100,
+		"thumbnails": [
+			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
+		],
+		"status": true,
+		"code": "EP014",
+		"stock": 16,
+		"category": "consola"
+	},
+	{
+		"id": 13,
+		"title": "play 1",
+		"description": "consola de videojuegos",
+		"price": 100,
+		"thumbnails": [
+			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
+		],
+		"status": true,
+		"code": "EP015",
+		"stock": 16,
+		"category": "consola"
+	},
+	{
+		"id": 15,
+		"title": "Iphone 11",
+		"description": "celular Apple",
+		"price": 100,
+		"thumbnails": [
+			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
+		],
+		"status": true,
+		"code": "EP017",
+		"stock": 16,
+		"category": "celular"
+	},
+	{
+		"id": 16,
+		"title": "Iphone 12",
+		"description": "celular Apple",
+		"price": 100,
+		"thumbnails": [
+			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
+		],
+		"status": true,
+		"code": "EP018",
+		"stock": 16,
+		"category": "celular"
+	}
+]
