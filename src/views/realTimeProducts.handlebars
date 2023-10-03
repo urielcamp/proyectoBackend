@@ -1,6 +1,6 @@
 <h1>Productos Real Time</h1>
 <hr />
-<form id="createForm">
+<form id="createForm" method="post">
     <div class="m-2">title: <input type="text" id="title"></div>
     <div class="m-2">Description: <input type="text" id="description"></div>
     <div class="m-2">Price: <input type="text" id="price"></div>
@@ -14,7 +14,6 @@
     <thead>
         <tr>
             <td>title</td>
-            <td>product</td>
             <td>description</td>
             <td>price</td>
             <td>code</td>
@@ -25,12 +24,13 @@
     <tbody>
         {{#each products}}
             <tr>
-                <td><button class="btn btn-danger" onclick="deleteProduct({{this.id}})">Eliminar</button></td>
+                <td>{{this.title}}</td>
                 <td>{{this.description}}</td>
                 <td>{{this.price}}</td>
                 <td>{{this.code}}</td>
                 <td>{{this.stock}}</td>
                 <td>{{this.category}}</td>
+                <td><button class="btn btn-danger" onclick="deleteProduct({{this.id}})">Eliminar</button></td>
             </tr>
             {{/each}}
     </tbody>

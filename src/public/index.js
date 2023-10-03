@@ -1,20 +1,29 @@
-const socket = io()
+const socket = io();
+const table = document.getElementById('realProductsTable');
+const createBtn = document.getElementById('createBtn');
 
-// Crear producto
+const resetForm = () => {
+    const inputIds = ['title', 'description', 'price', 'code', 'stock', 'category'];
+    inputIds.forEach(id => {
+        document.getElementById(id).value = '';
+    });
+};
 
-const table = document.getElementById('productsTable')
+const showAlert = (message) => {
+    alert(message);
+};
 
-
-document.getElementById('createBtn').addEventListener('click', () => {
+const handleCreateProduct = () => {
     const body = {
         title: document.getElementById('title').value,
         description: document.getElementById('description').value,
         price: document.getElementById('price').value,
         code: document.getElementById('code').value,
         stock: document.getElementById('stock').value,
-        category: document.getElementById('category').value, 
-    }
-    fetch("/api/products", {
+        category: document.getElementById('category').value,
+    };
+
+    fetch('/api/products', {
         method: 'post',
         body: JSON.stringify(body),
         headers: {
@@ -23,67 +32,67 @@ document.getElementById('createBtn').addEventListener('click', () => {
     })
         .then(result => result.json())
         .then(result => {
-            if (result.status === 'error') throw new Error(result.error)
+            if (result.status === 'error') {
+                throw new Error(result.error);
+            }
+            return fetch('/api/products');
         })
-        .then(() => fetch('/api/products'))
         .then(result => result.json())
         .then(result => {
-            if(result.status === 'error') throw new Error(result.error)
-            socket.emit('productList', result.payload)
-
-            alert('El producto se agrego correctamente!')
-
-            document.getElementById('title').value = ''
-            document.getElementById('description').value = ''
-            document.getElementById('price').value = ''
-            document.getElementById('code').value = ''
-            document.getElementById('stock').value = ''
-            document.getElementById('category').value = '' 
+            if (result.status === 'error') {
+                throw new Error(result.error);
+            }
+            socket.emit('productList', result.payload);
+            showAlert(`Ok. Todo salió bien! :)\nEl producto se ha agregado con éxito!\n\nVista actualizada!`);
+            resetForm();
         })
-        .catch(err => alert(`Ups, hubo un error :\n${err}`))
+        .catch(err => showAlert(`Ocurrió un error :(\n${err}`));
+};
 
-})
+createBtn.addEventListener('click', handleCreateProduct);
 
-//Borrar producto
-
-deleteProduct = (id) => {
+const deleteProduct = (id) => {
     fetch(`/api/products/${id}`, {
         method: 'delete',
     })
         .then(result => result.json())
         .then(result => {
-            if (result.status === 'error') throw new Error(result.error)
-            socket.emit('productList', result.payload)
-            alert('El producto se elimino correctamente')
+            if (result.status === 'error') {
+                throw new Error(result.error);
+            }
+            socket.emit('productList', result.payload);
+            showAlert(`Ok. Todo salió bien! :)\nEl producto eliminado con éxito!`);
         })
-        .catch(err => alert(`Ocurrio un error :\n${err}`))
+        .catch(err => showAlert(`Ocurrió un error :(\n${err}`));
+};
 
-}
 socket.on('updatedProducts', data => {
-    table.innerHTML = 
-        `
-            <tr>
-                <td></td>
-                <td>product</td>
-                <td>description</td>
-                <td>price</td>
-                <td>code</td>
-                <td>stock</td>
-                <td>category</td>
-            </tr>
+    const tableHeader = `
+        <tr>
+            <td></td>
+            <td><strong>Producto</strong></td>
+            <td><strong>Descripción</strong></td>
+            <td><strong>Precio</strong></td>
+            <td><strong>Código</strong></td>
+            <td><strong>Stock</strong></td>
+            <td><strong>Categoría</strong></td>
+        </tr>
+    `;
+
+    table.innerHTML = tableHeader;
+
+    for (const product of data) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><button class="btn btn-danger" onclick="deleteProduct('${product._id}')">Eliminar</button></td>
+            <td>${product.title}</td>
+            <td>${product.description}</td>
+            <td>${product.price}</td>
+            <td>${product.code}</td>
+            <td>${product.stock}</td>
+            <td>${product.category}</td>
         `;
-        for(product of data) {
-            let tr = document.createElement('tr')
-            tr.innerHTML=
-                        `
-                            <td><button class="btn btn-danger" onclick = "deleteProduct(${product.id})">Eliminar</td>
-                            <td>${product.title}</td>
-                            <td>${product.description}</td>
-                            <td>${product.price}</td>
-                            <td>${product.code}</td>
-                            <td>${product.stock}</td>
-                            <td>${product.category}</td>
-                        `;
-                    table.getElementsByTagName('tbody')[0].appendChild(tr);
-        }
-})
+
+        table.getElementsByTagName('tbody')[0].appendChild(tr);
+    }
+});

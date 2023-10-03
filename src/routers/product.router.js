@@ -1,6 +1,6 @@
 import { Router } from "express";
 import ProductManager from "../dao/FileSystem/productManager.js";
-import productsModel from '../dao/models/products.model.js'
+import productModel from '../dao/models/products.model.js'
 
 
 
@@ -11,7 +11,7 @@ const productManager = new ProductManager("./data/products.json")
 
 
 router.get("/", async (req, res) => {
-    const result = await productsModel.find()
+    const result = await productModel.find()
     const limit = req.query.limit
     if (typeof result === "string"){
         const error = result.split(" ")
@@ -34,14 +34,15 @@ router.get("/:pid", async (req, res) => {
 })
 
 router.post("/",  async (req, res) => {
-    const product = req.body
-    const result = await productManager.addProduct(product)
-    if(typeof result === "string") {
-        const error = result.split(" ")
-        return res.status(parseInt(error[0].slice(1,4))).json({ error: result.slice(6)})
-
+    try {
+        const product = req.body
+        const result = await productModel.create(product)
+        const products = await productModel.find().lean().exec()
+        req.io.emit('updatedProducts', products)
+        res.status(201).json({ status: 'success', payload: result })
+    } catch(err) {
+        res.status(500).json({ status: 'error', error: err.message })
     }
-    res.status(201).json({ status: "success", payload: result})
 })
 
 router.put("/:pid", async (req, res) => {

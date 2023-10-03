@@ -26,19 +26,6 @@
 		"category": "consola"
 	},
 	{
-		"id": 10,
-		"title": "play 5",
-		"description": "consola de videojuegos",
-		"price": 100,
-		"thumbnails": [
-			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
-		],
-		"status": true,
-		"code": "EP012",
-		"stock": 16,
-		"category": "consola"
-	},
-	{
 		"id": 11,
 		"title": "Xbox one",
 		"description": "consola de videojuegos",
@@ -61,19 +48,6 @@
 		],
 		"status": true,
 		"code": "EP014",
-		"stock": 16,
-		"category": "consola"
-	},
-	{
-		"id": 13,
-		"title": "play 1",
-		"description": "consola de videojuegos",
-		"price": 100,
-		"thumbnails": [
-			"https://th.bing.com/th/id/R.afcf58ada7c44266a0f6c3d1b05743ef?rik=7Jsz29geRuLYBw&pid=ImgRaw&r=0"
-		],
-		"status": true,
-		"code": "EP015",
 		"stock": 16,
 		"category": "consola"
 	},
