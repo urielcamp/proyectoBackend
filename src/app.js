@@ -9,8 +9,6 @@ import cartRouter from "./routers/cart.router.js"
 import viewsRouter from "./routers/view.router.js"
 import chatRouter from './routers/chat.router.js'
 
-
-
 const app = express()
 app.use(express.json())
 app.use(express.static('./src/public'))
@@ -23,8 +21,6 @@ app.use("/api/products", productsRouter)
 app.use("/api/carts", cartRouter)
 app.use('/products', viewsRouter)
 app.use('/chat', chatRouter)
-
-
 
 async function connectToDatabase() {
     try {
