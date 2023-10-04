@@ -9,6 +9,8 @@ import cartRouter from "./routers/cart.router.js"
 import viewsRouter from "./routers/view.router.js"
 import chatRouter from './routers/chat.router.js'
 
+export const puerto = 8080
+
 const app = express()
 app.use(express.json())
 app.use(express.static('./src/public'))
@@ -20,6 +22,7 @@ app.set('view engine', 'handlebars')
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartRouter)
 app.use('/products', viewsRouter)
+app.use('/carts', viewsRouter)
 app.use('/chat', chatRouter)
 
 async function connectToDatabase() {

@@ -1,16 +1,55 @@
-
-    <h1>Productos</h1>
-    <hr>
-    <section class="productsCards">
-        <article class="card">
+<h1>Productos</h1>
+<hr />
+<div align="center">
+    {{#if paginateInfo.hasPrevPage}}
+        <a href="{{paginateInfo.prevLink}}">Anterior</a>
+    {{/if}}
+    {{#each paginateInfo.totalPages}}
+        <a href="{{this.link}}">{{this.page}}</a>
+    {{/each}}
+    {{#if paginateInfo.hasNextPage}}
+        <a href="{{paginateInfo.nextLink}}">Siguiente</a>
+    {{/if}}
+</div>
+<hr />
+<section class="productsCards">
+    <article class="card">
         {{#each products}}
         <h3>{{this.title}}</h3>
         <p>{{this.description}}</p>
-        <p>{{this.code}}</p>
-        <p>precio:{{this.price}}</p>
-        <p>stock:{{this.stock}}</p>
-        <p>categoria:{{this.category}}</p>
+        <p>Código: {{this.code}}</p>
+        <p>Precio: {{this.price}}</p>
+        <p>Stock: {{this.stock}}</p>
+        <p>Categoría: {{this.category}}</p>
+        <button class="btn btn-success" onclick="addProductToCart('{{this._id}}')">Agregar al carrito</button>
         {{/each}}
     </article>
-    </section>
+</section>
+
+<script>
+    addProductToCart = (pid) => {
+        fetch(`/api/carts`, {
+            method: 'post'
+        })
+            .then(result => result.json())
+            .then(result => {
+                if (result.status === 'error') throw new Error(result.error)
+                return result.payload._id
+            })
+            .then(cid => 
+                fetch(`/api/carts/${cid}/product/${pid}`, {
+                    method: 'post'
+                })
+            )
+            .then(result => result.json())
+            .then(result => {
+                if (result.status === 'error') throw new Error(result.error)
+                alert(`El producto se agregó correctamente al carrito con id=${result.payload._id}!`)
+            })
+            .catch(err => alert(`Ocurrió un error :(\n${err}`))
+        
+    }
+</script>
+
+
     

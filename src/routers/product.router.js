@@ -1,39 +1,75 @@
 import { Router } from "express";
 import ProductManager from "../dao/FileSystem/productManager.js";
-import productModel from '../dao/models/products.model.js'
+import productModel from '../dao/models/products.model.js';
+import { puerto } from "../app.js";
 
+const router = Router();
+const productManager = new ProductManager("./data/products.json");
 
+export const getProducts = async (req, res) => {
+    try {
+        const limit = req.query.limit || 5;
+        const page = req.query.page || 1;
+        const filterOptions = {};
+        if (req.query.stock) filterOptions.stock = req.query.stock;
+        if (req.query.category) filterOptions.category = req.query.category;
+        const paginateOptions = { lean: true, limit, page };
+        if (req.query.sort === 'asc') paginateOptions.sort = { price: 1 };
+        if (req.query.sort === 'desc') paginateOptions.sort = { price: -1 };
+        const result = await productModel.paginate(filterOptions, paginateOptions);
 
-const router = Router()
+        // Genera los enlaces de paginación
+        const baseUrl = `http://${req.hostname}:${puerto}${req.baseUrl}`;
+        const totalPages = result.totalPages;
+        const currentPage = result.page;
+        const prevLink = currentPage > 1 ? `${baseUrl}?page=${currentPage - 1}` : null;
+        const nextLink = currentPage < totalPages ? `${baseUrl}?page=${currentPage + 1}` : null;
 
-
-const productManager = new ProductManager("./data/products.json")
-
-
-router.get("/", async (req, res) => {
-    const result = await productModel.find()
-    const limit = req.query.limit
-    if (typeof result === "string"){
-        const error = result.split(" ")
-        return res.status(parseInt(error[0].slice(1,4))).json({ error: result.slice(6)})
-
+        return {
+            statusCode: 200,
+            response: { 
+                status: 'success', 
+                payload: result.docs,
+                totalPages,
+                prevPage: result.prevPage,
+                nextPage: result.nextPage,
+                page: currentPage,
+                hasPrevPage: result.hasPrevPage,
+                hasNextPage: result.hasNextPage,
+                prevLink,
+                nextLink
+            }
+        }
+    } catch(err) {
+        return {
+            statusCode: 500,
+            response: { status: 'error', error: err.message }
+        }
     }
-    res.status(200).json({status: "success", payload: result.slice(0, limit)})
+}
 
+
+
+
+router.get('/', async (req, res) => {
+    const result = await getProducts(req, res)
+    res.status(result.statusCode).json(result.response)
 })
 
-router.get("/:pid", async (req, res) => {
-    const id = parseInt(req.params.pid)
-    const result = await productManager.getProductsById(id)
-    if(typeof result === "string") {
-        const error = result.split(" ")
-        return res.status(parseInt(error[0].slice(1,4))).json({ error: result.slice(6)})
-
+router.get('/:pid', async (req, res) => {
+    try {
+        const id = req.params.pid
+        const result = await productModel.findById(id).lean().exec()
+        if (result === null) {
+            return res.status(404).json({ status: 'error', error: 'Not found' })
+        }
+        res.status(200).json({ status: 'success', payload: result })
+    } catch(err) {
+        res.status(500).json({ status: 'error', error: err.message })
     }
-    res.status(200).json({status: "success", payload: result})
 })
 
-router.post("/",  async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const product = req.body
         const result = await productModel.create(product)
@@ -45,29 +81,35 @@ router.post("/",  async (req, res) => {
     }
 })
 
-router.put("/:pid", async (req, res) => {
-    const id = parseInt(req.params.pid)
-    const data = req.body
-    const result = await productManager.updateProduct(id, data)
-    if(typeof result === "string") {
-        const error = result.split( " ")
-        return res.status(parseInt(error[0].slice(1,4))).json({ error: result.slice(6)})
-
+router.put('/:pid', async (req, res) => {
+    try {
+        const id = req.params.pid
+        const data = req.body
+        const result = await productModel.findByIdAndUpdate(id, data, { returnDocument: 'after' })
+        if (result === null) {
+            return res.status(404).json({ status: 'error', error: 'Not found' })
+        }
+        const products = await productModel.find().lean().exec()
+        req.io.emit('updatedProducts', products)
+        res.status(200).json({ status: 'success', payload: result })
+    } catch(err) {
+        res.status(500).json({ status: 'error', error: err.message })
     }
-    res.status(200).json({ status: "success", payload: result})
 })
 
-router.delete("/:pid", async (req, res) => {
-    const id = parseInt(req.params.pid)
-    const data = req.body
-    const result = await productManager.deleteProduct(id, data)
-    if(typeof result === "string") {
-        const error = result.split( " ")
-        return res.status(parseInt(error[0].slice(1,4))).json({ error: result.slice(6)})
-
+router.delete('/:pid', async (req, res) => {
+    try {
+        const id = req.params.pid
+        const result = await productModel.findByIdAndDelete(id)
+        if (result === null) {
+            return res.status(404).json({ status: 'error', error: 'Not found' })
+        }
+        const products = await productModel.find().lean().exec()
+        req.io.emit('updatedProducts', products)
+        res.status(200).json({ status: 'success', payload: products })
+    } catch(err) {
+        res.status(500).json({ status: 'error', error: err.message })
     }
-    res.status(201).json({ status: "success", payload: result})
 })
 
 export default router
-
