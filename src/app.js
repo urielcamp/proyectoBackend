@@ -21,9 +21,11 @@ const app = express()
 
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: 'mongodb://localhost/ecommerce', 
+        mongoUrl: 'mongodb://127.0.0.1:27017/ecommerce',
+
         dbName: 'ecommerce'
     }),
+    
     secret: 'secret',
     resave: true,
     saveUninitialized: true
