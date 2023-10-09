@@ -46,7 +46,7 @@ const handleCreateProduct = () => {
             showAlert(`Ok. Todo salió bien! :)\nEl producto se ha agregado con éxito!\n\nVista actualizada!`);
             resetForm();
         })
-        .catch(err => showAlert(`Ocurrió un error :(\n${err}`));
+        .catch(err => showAlert(`Algo salio mal\n${err}`));
 };
 
 createBtn.addEventListener('click', handleCreateProduct);

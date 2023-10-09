@@ -3,11 +3,12 @@ import ProductManager from "../dao/FileSystem/productManager.js";
 import { getProductsFromCart } from "./cart.router.js";
 import { getProducts } from "./product.router.js";
 import { puerto } from "../app.js";
+import { publicRoutes } from "../middlewares/auth.middleware.js";
 
 const router = Router()
 const productManager = new ProductManager('./data/products.json')
 
-router.get('/', async (req, res) => {
+router.get('/', publicRoutes, async (req, res) => {
     const result = await getProducts(req, res)
     if (result.statusCode === 200) {
         const totalPages = []
@@ -21,7 +22,7 @@ router.get('/', async (req, res) => {
             }
             totalPages.push({ page: index, link })
         }
-        res.render('home', { products: result.response.payload, paginateInfo: {
+        res.render('home', { user, products: result.response.payload, paginateInfo: {
                 hasPrevPage: result.response.hasPrevPage,
                 hasNextPage: result.response.hasNextPage,
                 prevLink: result.response.prevLink,
@@ -34,7 +35,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/realTimeProducts', async (req, res) => {
+router.get('/realTimeProducts', publicRoutes, async (req, res) => {
     const result = await getProducts(req, res)
     if (result.statusCode === 200) {
         res.render('realTimeProducts', { products: result.response.payload })
