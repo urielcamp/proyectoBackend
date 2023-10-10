@@ -1,14 +1,13 @@
 import { Router } from "express";
-import ProductManager from "../dao/FileSystem/productManager.js";
 import { getProductsFromCart } from "./cart.router.js";
 import { getProducts } from "./product.router.js";
 import { puerto } from "../app.js";
 import { publicRoutes } from "../middlewares/auth.middleware.js";
 
 const router = Router()
-const productManager = new ProductManager('./data/products.json')
 
-router.get('/', publicRoutes, async (req, res) => {
+
+router.get('/', publicRoutes,  async (req, res) => {
     const result = await getProducts(req, res)
     if (result.statusCode === 200) {
         const totalPages = []
@@ -22,6 +21,7 @@ router.get('/', publicRoutes, async (req, res) => {
             }
             totalPages.push({ page: index, link })
         }
+        const user = req.session.user
         res.render('home', { user, products: result.response.payload, paginateInfo: {
                 hasPrevPage: result.response.hasPrevPage,
                 hasNextPage: result.response.hasNextPage,
