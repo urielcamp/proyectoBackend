@@ -14,9 +14,20 @@ import sessionViewsRouter from './routers/session.view.router.js'
 import sessionRouter from "./routers/session.router.js";
 import MongoStore from "connect-mongo";
 
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+
 export const puerto = 8080
 
 const app = express()
+
+app.use(express.json())
+app.use(express.static('./src/public'))
+app.use(express.urlencoded({ extended: true }));
+app.engine('handlebars', handlebars.engine())
+app.set('views', './src/views')
+app.set('view engine', 'handlebars')
+
 
 
 app.use(session({
@@ -31,13 +42,9 @@ app.use(session({
     saveUninitialized: true
 }))
 
-app.use(express.json())
-app.use(express.static('./src/public'))
-
-app.engine('handlebars', handlebars.engine())
-app.set('views', './src/views')
-app.set('view engine', 'handlebars')
-
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 export const privateRoutes = (req, res, next) => {
     if (!req.session.user) return res.redirect('/login');

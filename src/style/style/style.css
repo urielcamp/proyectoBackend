@@ -54,7 +54,10 @@ img {
   margin: 0 auto;
   padding: 0 20px;
 }
+/********************************************* FINAL DEL RESET ************************************************/
 
+
+/************************************************* CHAT ************************************************/
 .chatContainer {
   height: 100vh;
   width: 100%;
@@ -74,4 +77,4 @@ img {
   width: 100%;
   display: flex;
   flex-direction: column;
-}/*# sourceMappingURL=style.css.map */
+}

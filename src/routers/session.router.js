@@ -1,38 +1,31 @@
 import { Router } from "express";
 import UserModel from "../dao/models/user.model.js";
+import {  isValidPassword } from "../utils.js";
+import passport from "passport";
+
 
 const router = Router()
 
-router.post('/register', async(req, res) => {
-    const userToRegister = req.body
-    const user = new UserModel(userToRegister)
-    await user.save()
+router.post('/register', passport.authenticate('register', {failureRedirect: '/session/failRegister'}) ,async(req, res) => {
     res.redirect('/')
 })
 
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        const user = await UserModel.findOne({ email, password }).lean().exec();
+router.get('/failRegister', (req, res) => res.send({error: 'Passport register failes'}))
 
-        if (!user) {
-            return res.redirect('/');
-        }
-
-        if (user.email === 'adminCoder@coder.com' && user.password === 'adminCod3r123') {
-            user.role = 'admin';
-        } else {
-            user.role = 'user';
-        }
-
-        req.session.user = user;
-
-        res.redirect('/products');
-    } catch (error) {
-        console.error('Error en el inicio de sesión:', error);
-        res.status(500).json({ status: 'error', error: 'Error en el inicio de sesión' });
+router.post('/login', passport.authenticate('login', {failureRedirect: '/session/failLogin'}),async (req, res) => {
+    if(!req.user){
+        return res.status(400).send({ status: 'error', error: 'Invalid credentials'})
+    }    
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        email: req.user.email,
+        age: req.user.age
     }
+    res.redirect('/products');
 });
+
+router.get('/failLogin', (req, res) => res.send({error: 'Passport login failes'}))
 
 router.get('/logout', (req, res) => {
     try {
