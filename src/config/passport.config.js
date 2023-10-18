@@ -41,13 +41,13 @@ passport.use('login', new localStrategy({
             return done(null, false);
         }
 
-        // Verifica si las credenciales son las del administrador
+        
         if (user.email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-            // Si son las credenciales del administrador, asigna el rol "admin" al usuario
+            
             user.role = 'admin';
             
         } else {
-            // Si no son las credenciales del administrador, asigna el rol "user"
+            
             user.role = 'user';
         }
 
