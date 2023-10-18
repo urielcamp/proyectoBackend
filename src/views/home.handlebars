@@ -1,4 +1,7 @@
-<h1>Productos</h1>
+<h1>Bienvenido</h1>
+
+<h2>Usuario: {{user.first_name}} {{user.last_name}} {{user.role}} (<a href="/profile">Ver perfil</a>)</h2>
+<button class=""><a href="/api/sessions/logout">Cerrar sesion</a></button>
 <hr />
 <div align="center">
     {{#if paginateInfo.hasPrevPage}}
@@ -12,6 +15,7 @@
     {{/if}}
 </div>
 <hr />
+<h3>Products</h3>
 <section class="productsCards">
     <article class="card">
         {{#each products}}
@@ -49,6 +53,7 @@
             .catch(err => alert(`Ocurrió un error :(\n${err}`))
         
     }
+
 </script>
 
 

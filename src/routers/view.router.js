@@ -44,7 +44,7 @@ router.get('/realTimeProducts', publicRoutes, async (req, res) => {
     }
 })
 
-router.get('/:cid', async(req, res) => {
+router.get('/:cid', publicRoutes, async(req, res) => {
     const result = await getProductsFromCart(req, res)
     if (result.statusCode === 200) {
         res.render('cart', { cart: result.response.payload })
@@ -52,5 +52,11 @@ router.get('/:cid', async(req, res) => {
         res.status(result.statusCode).json({ status: 'error', error: result.response.error })
     }
 })
+
+router.get('/profile', publicRoutes, (req, res) => {
+
+    const user = req.session.user;
+    res.render('profile', { user });
+});
 
 export default router

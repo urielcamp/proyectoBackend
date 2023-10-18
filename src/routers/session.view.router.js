@@ -11,5 +11,10 @@ router.get('/', privateRoutes, async (req, res) => {
     res.render('sessions/login')
 })
 
+router.get('/profile', publicRoutes, (req, res) => {
+    res.render('sessions/profile', req.session.user)
+})
 
 export default router
+
+
