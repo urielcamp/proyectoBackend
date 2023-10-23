@@ -31,35 +31,48 @@ const initializePassport = () => {
     }))
 
     
-passport.use('login', new localStrategy({
-    usernameField: 'email',
-}, async(username, password, done) => {
-    try {
+    passport.use('login', new localStrategy({
+
+        usernameField: 'email',
+        
+        }, async(username, password, done) => {
+        
+        try {
+        
         const user = await UserModel.findOne({ email: username });
         
         if (!user) {
-            return done(null, false);
+        
+        return done(null, false);
+        
         }
-
         
         if (user.email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-            
-            user.role = 'admin';
-            
+        
+        user.role = 'admin';
+        
         } else {
-            
-            user.role = 'user';
+        
+        user.role = 'usuario';
+        
         }
-
+        
         if (!isValidPassword(user, password)) {
-            return done(null, false);
+        
+        return done(null, false);
+        
         }
-
+        
         return done(null, user);
-    } catch (err) {
+        
+        } catch (err) {
+        
         return done(err);
-    }
-}));
+        
+        }
+        
+        }));
+    
 
 passport.use('github', new GitHubStrategy({
     clientID: 'Iv1.906b3925049edf04',
@@ -81,9 +94,12 @@ passport.use('github', new GitHubStrategy({
     }
 }))
 
-    passport.serializeUser((user, done) => {
-        done(null, user._id)
-    })
+passport.serializeUser((user, done) => {
+
+        done(null, user._id); 
+   
+});
+
 
     passport.deserializeUser(async(id, done) =>{
         const user = await UserModel.findById(id)
