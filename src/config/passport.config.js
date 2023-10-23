@@ -32,47 +32,34 @@ const initializePassport = () => {
 
     
     passport.use('login', new localStrategy({
-
         usernameField: 'email',
-        
-        }, async(username, password, done) => {
-        
+        passwordField: 'password',
+    }, async (email, password, done) => {
         try {
-        
-        const user = await UserModel.findOne({ email: username });
-        
-        if (!user) {
-        
-        return done(null, false);
-        
-        }
-        
-        if (user.email === 'adminCoder@coder.com' && password === 'adminCod3r123') {
-        
-        user.role = 'admin';
-        
-        } else {
-        
-        user.role = 'usuario';
-        
-        }
-        
-        if (!isValidPassword(user, password)) {
-        
-        return done(null, false);
-        
-        }
-        
-        return done(null, user);
-        
-        } catch (err) {
-        
-        return done(err);
-        
-        }
-        
-        }));
+            if (email === 'adminCoder@coder.com') {
+                if (password === 'adminCod3r123') {
+                    const adminUser = {
+                        email: 'adminCoder@coder.com',
+                        password: 'adminCod3r123',
+                        role: 'admin',
+                        id: 'admin123' 
+                    };
+                    return done(null, adminUser);
+                } else {
+                    return done(null, false, { message: 'Contraseña incorrecta para el administrador' });
+                }
+            }
     
+            const user = await UserModel.findOne({ email }).lean().exec();
+            if (!user) {
+                return done(null, false, { message: 'Datos incorrectos' });
+            }
+            user.role = 'usuario';
+            return done(null, user);
+        } catch (err) {
+            return done(err);
+        }
+    }));
 
 passport.use('github', new GitHubStrategy({
     clientID: 'Iv1.906b3925049edf04',
@@ -95,18 +82,25 @@ passport.use('github', new GitHubStrategy({
 }))
 
 passport.serializeUser((user, done) => {
-
-        done(null, user._id); 
-   
+    done(null, { id: user.id, role: user.role }); 
 });
 
+passport.deserializeUser(async (data, done) => {
+    if (data.role === 'admin') {
+        if (data.id === 'admin123') { 
+            const adminUser = {
+                email: 'adminCoder@coder.com',
+                password: 'adminCod3r123',
+                role: 'admin',
+                id: 'admin123'
+            };
+            return done(null, adminUser);
+        }
+    }
 
-    passport.deserializeUser(async(id, done) =>{
-        const user = await UserModel.findById(id)
-        done(null, user)
-    })
-
-
+    const user = await UserModel.findById(data.id);
+    done(null, user);
+});
 }
 
 export default initializePassport
