@@ -1,11 +1,13 @@
-<h1>Registrar Usuario</h1>
-<hr>
-
-<form action="/api/sessions/register" method="post">
-    Nombre: <input type="text" name="first_name"><br>
-    Apellido: <input type="text" name="last_name"><br>
-    Correo: <input type="text" name="email"><br>
-    Edad: <input type="number" name="age"><br>
-    Contraseña: <input type="text" name="password"><br>
-    <input type="submit" value="crear cuenta"> | <a href="/">Iniciar sesión</a>
-</form>
+    <section class="registerContainer">
+        <div class="formContainer">
+            <h1>Crear Cuenta</h1>
+            <form action="/api/sessions/register" method="post" class="formRegister">
+                Nombre: <input type="text" name="first_name">
+                Apellido: <input type="text" name="last_name">
+                Correo: <input type="text" name="email"></p>
+                Edad: <input type="number" name="age"></p>
+                Contraseña: <input type="text" name="password"></p>
+                    <input type="submit" value="crear cuenta" class="registerInput">  <a href="/">Iniciar sesión</a>
+            </form>
+        </div>
+    </section>

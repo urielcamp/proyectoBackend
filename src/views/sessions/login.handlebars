@@ -1,10 +1,18 @@
-<h1>Iniciar sesion</h1>
-<hr>
 
-<form action="/api/sessions/login" method="post">
-    correo: <input type="text" name="email"><br>
-    contraseña: <input type="text" name="password"><br><br>
-    <input type="submit" value="Iniciar Sesion"> <a href="/register">Registrarme</a>
-    <a href="/api/sessions/github">Login with GitHub</a>
-
-</form>
+<section class="loginContainer">
+    <article class="welcomeContainer">
+        <div>
+            <h2>Bienvenidos a mi proyecto backend</h2>
+        </div>
+    </article>
+    <article class="formContainer">
+        <h2>Iniciar sesion</h2>
+        <form action="/api/sessions/login" method="post" class="formLogin">
+        Correo: <input type="text" name="email" > 
+        Contraseña: <input type="text" name="password" >
+        <input type="submit" value="Iniciar Sesion" class="login"> 
+        <a href="/api/sessions/github" class="github">Login with GitHub</a>
+        <a href="/register" class="register">Registrarme</a>
+        </form>
+    </article>
+</section>

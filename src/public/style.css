@@ -1,0 +1,185 @@
+
+/* Reset general */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Estilos básicos de elementos HTML */
+  body, html {
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+  }
+  
+  /* Encabezados */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+  }
+  
+  /* Listas */
+  ul, ol {
+    list-style: none;
+  }
+  
+  /* Enlaces */
+  a {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  /* Formularios */
+  input, textarea, button {
+    border: none;
+    outline: none;
+    font-family: inherit;
+  }
+  
+  /* Estilos de botones */
+  button {
+    cursor: pointer;
+  }
+  
+  /* Imágenes */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Contenedor principal */
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .loginContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+  }
+  .loginContainer h2 {
+    padding-bottom: 40px;
+    font-size: 24px;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  }
+  .loginContainer .welcomeContainer {
+    opacity: 80%;
+    display: grid;
+    background-color: #BBE1FA;
+    width: 55%;
+    height: 100%;
+    align-items: center;
+    justify-items: center;
+  }
+  .loginContainer .welcomeContainer div {
+    background-color: #398fc7;
+    height: 300px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .loginContainer .welcomeContainer div h2 {
+    font-size: 34px;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  }
+  .loginContainer .formContainer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+  }
+  .loginContainer .formContainer .formLogin {
+    align-items: center;
+    justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+  .loginContainer .formContainer input {
+    border: 1.5px black solid;
+    border-radius: 5px;
+    width: 300px;
+    height: 38px;
+    margin-bottom: 40px;
+  }
+  .loginContainer .formContainer .login {
+    background-color: rgb(105, 153, 241);
+    border: 1.5px black solid;
+    border-radius: 5px;
+    width: 300px;
+    height: 38px;
+    margin-bottom: 40px;
+  }
+  .loginContainer .formContainer .github {
+    background-color: black;
+    width: 300px;
+    height: 38px;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 18px;
+  }
+  .loginContainer .formContainer .register {
+    font-size: 18px;
+  }
+  .loginContainer .formContainer .register:hover {
+    color: rgb(43, 43, 233);
+  }
+
+  .registerContainer {
+    background-color: #062f4b;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    height: 100vh;
+    width: 100%;
+  }
+  .registerContainer .formContainer {
+    background-color: white;
+    height: 90%;
+    width: 60%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .registerContainer .formContainer h1 {
+    padding-top: 20px;
+    font-size: 24px;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  }
+  .registerContainer .formContainer .formRegister {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 100%;
+    width: 100%;
+  }
+  .registerContainer .formContainer .formRegister input {
+    height: 30px;
+    width: 300px;
+    border: 1px black solid;
+    border-radius: 5px;
+  }
+  .registerContainer .formContainer .formRegister .registerInput {
+    height: 30px;
+    width: 120px;
+    border: 1px black solid;
+    margin: 10px;
+    cursor: pointer;
+  }
+  .registerContainer .formContainer .formRegister a:hover {
+    color: rgb(77, 77, 234);
+  }
