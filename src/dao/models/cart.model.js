@@ -19,3 +19,4 @@ mongoose.set('strictQuery', false)
 const cartModel = mongoose.model('carts', cartSchema)
 
 export default cartModel
+

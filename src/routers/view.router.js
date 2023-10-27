@@ -54,9 +54,10 @@ router.get('/:cid', publicRoutes, async(req, res) => {
 })
 
 router.get('/profile', publicRoutes, (req, res) => {
-
-    const user = req.session.user;
+    
+    const user = req.session.user
     res.render('profile', { user });
 });
 
 export default router
+

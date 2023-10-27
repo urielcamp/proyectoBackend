@@ -1,6 +1,10 @@
 <h1>Bienvenido</h1>
 
 <h2>Usuario: {{user.first_name}} {{user.last_name}} {{user.role}} (<a href="/profile">Ver perfil</a>)</h2>
+
+
+
+
 <button class=""><a href="/api/sessions/logout">Cerrar sesion</a></button>
 <hr />
 <div align="center">
@@ -26,6 +30,7 @@
         <p>Stock: {{this.stock}}</p>
         <p>Categoría: {{this.category}}</p>
         <button class="btn btn-success" onclick="addProductToCart('{{this._id}}')">Agregar al carrito</button>
+
         {{/each}}
     </article>
 </section>
