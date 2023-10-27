@@ -54,6 +54,8 @@ const initializePassport = () => {
             if (!user) {
                 return done(null, false, { message: 'Datos incorrectos' });
             }
+
+            if(!isValidPassword(user, password)) return done(null, false)
             user.role = 'usuario';
             return done(null, user);
         } catch (err) {
