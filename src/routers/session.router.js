@@ -1,6 +1,4 @@
 import { Router } from "express";
-import UserModel from "../dao/models/user.model.js";
-import {  isValidPassword } from "../utils.js";
 import passport from "passport";
 
 
@@ -17,11 +15,14 @@ router.post('/login', passport.authenticate('login', { failureRedirect: 'failLog
         return res.status(400).send({ status: 'error', error: 'Invalid credentials' });
     }    
     req.session.user = {
+        _id: req.user._id,
         first_name: req.user.first_name,
         last_name: req.user.last_name,
         email: req.user.email,
         age: req.user.age,
-        role: req.user.role
+        password: req.user.password,
+        cart: req.user.cart,
+        role: req.user.role,
     }
     res.redirect('/products');
 });

@@ -1,7 +1,7 @@
 <h1>Bienvenido</h1>
 
 <h2>Usuario: {{user.first_name}} {{user.last_name}} {{user.role}} (<a href="/profile">Ver perfil</a>)</h2>
-
+<p id="cid" data-cid="{{user.cart}}">Carrito: {{user.cart}}</p>
 
 
 
@@ -36,28 +36,21 @@
 </section>
 
 <script>
-    addProductToCart = (pid) => {
-        fetch(`/api/carts`, {
-            method: 'post'
-        })
-            .then(result => result.json())
-            .then(result => {
-                if (result.status === 'error') throw new Error(result.error)
-                return result.payload._id
-            })
-            .then(cid => 
-                fetch(`/api/carts/${cid}/product/${pid}`, {
-                    method: 'post'
-                })
-            )
-            .then(result => result.json())
-            .then(result => {
-                if (result.status === 'error') throw new Error(result.error)
-                alert(`El producto se agregó correctamente al carrito con id=${result.payload._id}!`)
-            })
-            .catch(err => alert(`Ocurrió un error :(\n${err}`))
-        
-    }
+     let cartId = document.getElementById('cid');
+  let cid = cartId.getAttribute('data-cid');
+ 
+let addProductToCart = (pid) => {
+  fetch(`/api/carts/${cid}/product/${pid}`, {
+    method: 'post',
+  })
+    .then(result => result.json())
+    .then(result => {
+      if (result.status === 'error') throw new Error(result.error) 
+        alert(`Producto agregado al carrito con éxito id=${result.payload._id}`);
+      
+    })
+    .catch(error => alert('Ocurrio un error,' + error));
+}
 
 </script>
 
