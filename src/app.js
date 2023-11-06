@@ -16,8 +16,22 @@ import MongoStore from "connect-mongo";
 
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import { Command } from "commander";
+import dotenv from 'dotenv'
 
-export const puerto = 8080
+dotenv.config()
+
+
+const program = new Command()
+
+program
+    .option('-p <port>', 'Puerto del servidor', 8080)
+    .option(' --mode <port>', 'Modo de ejecucion', 'Production')
+
+program.parse()
+
+export const port = program.opts().p
+const mode = program.opts().mode
 
 const app = express()
 
@@ -28,13 +42,16 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', './src/views')
 app.set('view engine', 'handlebars')
 
+const MONGO_URI = process.env.MONGO_URI
+const MONGO_DB_NAME = process.env.MONGO_DB_NAME
+const MONGO_URL = process.env.MONGO_URL
 
 
 app.use(session({
     store: MongoStore.create({
-        mongoUrl: 'mongodb://127.0.0.1:27017/ecommerce',
+        mongoUrl: MONGO_URL,
 
-        dbName: 'ecommerce'
+        dbName: MONGO_DB_NAME
     }),
     
     secret: 'secret',
@@ -66,7 +83,7 @@ app.use('/api/sessions', sessionRouter)
 
 async function connectToDatabase() {
     try {
-        await mongoose.connect('mongodb+srv://coder:coder@cluster0.rzjdugp.mongodb.net/ecommerce', {
+        await mongoose.connect(MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -78,7 +95,7 @@ async function connectToDatabase() {
 
 connectToDatabase();
 
-const server = app.listen(8080, () => console.log("server up!!!"))
+const server = app.listen(port, () => console.log(`server up on port ${port} running on mode ${mode} !!!`))
 const io = new Server(server)
 Sockets(io)
 

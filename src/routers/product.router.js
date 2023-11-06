@@ -1,7 +1,7 @@
 import { Router } from "express";
 import ProductManager from "../dao/FileSystem/productManager.js";
 import productModel from '../dao/models/products.model.js';
-import { puerto } from "../app.js";
+import { port } from "../app.js";
 
 const router = Router();
 const productManager = new ProductManager("./data/products.json");
@@ -19,7 +19,7 @@ export const getProducts = async (req, res) => {
         const result = await productModel.paginate(filterOptions, paginateOptions);
 
         // Genera los enlaces de paginación
-        const baseUrl = `http://${req.hostname}:${puerto}${req.baseUrl}`;
+        const baseUrl = `http://${req.hostname}:${port}${req.baseUrl}`;
         const totalPages = result.totalPages;
         const currentPage = result.page;
         const prevLink = currentPage > 1 ? `${baseUrl}?page=${currentPage - 1}` : null;

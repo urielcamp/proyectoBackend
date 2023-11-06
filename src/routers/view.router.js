@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { getProductsFromCart } from "./cart.router.js";
 import { getProducts } from "./product.router.js";
-import { puerto } from "../app.js";
+import { port } from "../app.js";
 import { publicRoutes } from "../middlewares/auth.middleware.js";
 
 const router = Router()
@@ -14,10 +14,10 @@ router.get('/', publicRoutes,  async (req, res) => {
         let link
         for (let index = 1; index <= result.response.totalPages; index++) {
             if (!req.query.page) {
-                link = `http://${req.hostname}:${puerto}${req.originalUrl}&page=${index}`
+                link = `http://${req.hostname}:${port}${req.originalUrl}&page=${index}`
             } else {
                 const modifiedUrl = req.originalUrl.replace(`page=${req.query.page}`, `page=${index}`)
-                link = `http://${req.hostname}:${puerto}${modifiedUrl}`
+                link = `http://${req.hostname}:${port}${modifiedUrl}`
             }
             totalPages.push({ page: index, link })
         }
