@@ -23,6 +23,7 @@ router.post('/login', passport.authenticate('login', { failureRedirect: 'failLog
         password: req.user.password,
         cart: req.user.cart,
         role: req.user.role,
+        __v: req.user.__v
     }
     res.redirect('/products');
 });

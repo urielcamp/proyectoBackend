@@ -7,7 +7,26 @@
 
 <button class=""><a href="/api/sessions/logout">Cerrar sesion</a></button>
 <hr />
-<div align="center">
+
+
+<section class="products">
+  <h3>Products</h3>
+  <article class="productsCards">
+      {{#each products}}
+      <div class="card">
+          <h3>{{this.title}}</h3>
+          <p>{{this.description}}</p>
+          <p>Código: {{this.code}}</p>
+          <p>Precio: {{this.price}}</p>
+          <p>Stock: {{this.stock}}</p>
+          <p>Categoría: {{this.category}}</p>
+          <button class="btn btn-success" onclick="addProductToCart('{{this._id}}')">Agregar al carrito</button>
+      </div>
+      {{/each}}
+  </article>
+</section>
+
+<div align="center" class="paginate">
     {{#if paginateInfo.hasPrevPage}}
         <a href="{{paginateInfo.prevLink}}">Anterior</a>
     {{/if}}
@@ -18,27 +37,14 @@
         <a href="{{paginateInfo.nextLink}}">Siguiente</a>
     {{/if}}
 </div>
-<hr />
-<h3>Products</h3>
-<section class="productsCards">
-    <article class="card">
-        {{#each products}}
-        <h3>{{this.title}}</h3>
-        <p>{{this.description}}</p>
-        <p>Código: {{this.code}}</p>
-        <p>Precio: {{this.price}}</p>
-        <p>Stock: {{this.stock}}</p>
-        <p>Categoría: {{this.category}}</p>
-        <button class="btn btn-success" onclick="addProductToCart('{{this._id}}')">Agregar al carrito</button>
 
-        {{/each}}
-    </article>
-</section>
+
+
 
 <script>
-     let cartId = document.getElementById('cid');
+  let cartId = document.getElementById('cid');
   let cid = cartId.getAttribute('data-cid');
- 
+
 let addProductToCart = (pid) => {
   fetch(`/api/carts/${cid}/product/${pid}`, {
     method: 'post',
