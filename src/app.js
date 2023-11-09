@@ -24,6 +24,7 @@ const program = new Command();
 program
     .option('-p <port>', 'Puerto del servidor', 8080)
     .option('--mode <port>', 'Modo de ejecucion', 'Production');
+
 program.parse();
 
 export const port = program.opts().p;
@@ -39,15 +40,19 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', './src/views');
 app.set('view engine', 'handlebars');
 
-// Configuración de la sesión y passport
+const MONGO_URI_SESSION = process.env.MONGO_URL;
+const MONGO_DB_NAME_SESSION = process.env.MONGO_DB_NAME;
+
+const MONGO_URI = process.env.MONGO_URI;
+
 app.use(session({
 store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URL,
-    dbName: process.env.MONGO_DB_NAME,
+    mongoUrl: MONGO_URI_SESSION,
+    dbName: MONGO_DB_NAME_SESSION,
 }),
     secret: 'secret',
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: true
 }));
 
 initializePassport();
@@ -55,13 +60,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 export const privateRoutes = (req, res, next) => {
-if (!req.session.user) return res.redirect('/login');
-next();
+    if (!req.session.user) return res.redirect('/login');
+    next();
 };
 
 export const publicRoutes = (req, res, next) => {
     if (!req.session.user) return res.redirect('/');
-        next();
+    next();
 };
 
 // Rutas
@@ -74,28 +79,20 @@ app.use('/chat', chatRouter);
 app.use('/api/sessions', sessionRouter);
 
 // Conexión a la base de datos y luego inicio del servidor
-async function startServer() {
-    try {
-        await connectToDatabase();
-        const server = app.listen(port, () => console.log(`Server up on port ${port} running on mode ${mode} !!!`));
-        const io = new Server(server);
-        Sockets(io);
-    } catch (error) {
-        console.error("Error al iniciar el servidor:", error);
-    }
-    }
+async function startApp() {
+  try {
+    await mongoose.connect(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Conexión a MongoDB exitosa");
 
-async function connectToDatabase() {
-    try {
-        await mongoose.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        });
-        console.log("Conexión a MongoDB exitosa");
-    } catch (error) {
-        console.error("Error al conectar a MongoDB:", error);
-        throw error;
-    }
-    }
+    const server = app.listen(port, () => console.log(`Server up on port ${port} running on mode ${mode} !!!`));
+    const io = new Server(server);
+    Sockets(io);
+  } catch (error) {
+    console.error("Error al iniciar el servidor:", error);
+  }
+}
 
-startServer();
+startApp();
