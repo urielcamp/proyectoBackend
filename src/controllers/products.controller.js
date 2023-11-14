@@ -3,8 +3,7 @@ import { port } from "../app.js";
 
 export const paginateProductsController = async (req, res) => {
     try {
-        const limit = req.query.limit || 5;
-        const page = req.query.page || 1;
+        const {limit = 5, page = 1 } =req.query
         const filterOptions = {};
         if (req.query.stock) filterOptions.stock = req.query.stock;
         if (req.query.category) filterOptions.category = req.query.category;
