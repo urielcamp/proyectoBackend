@@ -6,7 +6,8 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import { Command } from "commander";
-import dotenv from 'dotenv';
+import config from "./config/config.js";
+
 
 import Sockets from "./sockets.js";
 import initializePassport from "./config/passport.config.js";
@@ -17,7 +18,7 @@ import chatRouter from './routers/chat.router.js';
 import sessionViewsRouter from './routers/session.view.router.js';
 import sessionRouter from "./routers/session.router.js";
 
-dotenv.config();
+
 
 const program = new Command();
 
@@ -40,14 +41,14 @@ app.engine('handlebars', handlebars.engine());
 app.set('views', './src/views');
 app.set('view engine', 'handlebars');
 
-const MONGO_URI_SESSION = process.env.MONGO_URL;
-const MONGO_DB_NAME_SESSION = process.env.MONGO_DB_NAME;
+const MONGO_URL_SESSION = config.mongo.url;
+const MONGO_DB_NAME_SESSION = config.mongo.dbname;
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = config.mongo.uri;
 
 app.use(session({
 store: MongoStore.create({
-    mongoUrl: MONGO_URI_SESSION,
+    mongoUrl: MONGO_URL_SESSION,
     dbName: MONGO_DB_NAME_SESSION,
 }),
     secret: 'secret',

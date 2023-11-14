@@ -4,6 +4,8 @@ import GitHubStrategy from 'passport-github2'
 import UserModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import cartModel from "../dao/models/cart.model.js";
+import config from "./config.js";
+
 
 
 const localStrategy = local.Strategy
@@ -39,11 +41,11 @@ const initializePassport = () => {
         passwordField: 'password',
     }, async (email, password, done) => {
         try {
-            if (email === 'adminCoder@coder.com') {
-                if (password === 'adminCod3r123') {
+            if (email === config.admin.email) {
+                if (password === config.admin.pass) {
                     const adminUser = {
-                        email: 'adminCoder@coder.com',
-                        password: 'adminCod3r123',
+                        email: config.admin.email,
+                        password: config.admin.pass,
                         role: 'admin',
                         id: 'admin123' 
                     };
@@ -67,9 +69,9 @@ const initializePassport = () => {
     }));
 
 passport.use('github', new GitHubStrategy({
-    clientID: 'Iv1.906b3925049edf04',
-    clientSecret: '997f967b0fb88a1bd7132598430aa969c019cee1',
-    callbackURL: 'http://localhost:8080/api/sessions/githubcallback'
+    clientID: config.github.id,
+    clientSecret: config.github.secret,
+    callbackURL: config.github.url
 }, async(accessTokem, refreshToken, profile, done) => {
     try{
         const user = await UserModel.findOne({ email: profile._json.email})
@@ -94,8 +96,8 @@ passport.deserializeUser(async (data, done) => {
     if (data.role === 'admin') {
         if (data.id === 'admin123') { 
             const adminUser = {
-                email: 'adminCoder@coder.com',
-                password: 'adminCod3r123',
+                email: config.admin.email,
+                password: config.admin.pass,
                 role: 'admin',
                 id: 'admin123'
             };
